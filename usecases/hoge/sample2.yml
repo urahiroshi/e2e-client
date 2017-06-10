@@ -1,0 +1,15 @@
+url: http://yahoo.com
+actions:
+  - selectors:
+    - 'form[action*="/search"] [name=p]'
+    type: input
+    value: piyo
+  - selectors:
+    - 'form[action*="/search"] [type=submit]'
+    type: click
+  - selectors:
+    - '.title'
+    type: getHtml
+  - selectors:
+    - '.title'
+    type: getText
