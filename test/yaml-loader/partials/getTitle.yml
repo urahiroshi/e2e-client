@@ -1,0 +1,6 @@
+- selectors:
+  - '.title'
+  type: getHtml
+- selectors:
+  - '.title'
+  type: getText

@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "js-yaml": "^3.8.3",
     "minimist": "^1.2.0",
+    "mustache": "^2.3.0",
     "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1"
   }
 }

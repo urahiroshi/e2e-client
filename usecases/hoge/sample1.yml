@@ -4,12 +4,7 @@ actions:
     - 'form[action*="/search"] [name=p]'
     type: input
     value: fuga
-  - selectors:
-    - 'form[action*="/search"] [type=submit]'
-    type: click
-  - selectors:
-    - '.title'
-    type: getHtml
+  {{ fuga }}
   - selectors:
     - '.title'
     type: getText

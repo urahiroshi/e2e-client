@@ -1,0 +1,3 @@
+url: {{ urls.yahoo }}
+actions:
+  {{> search(hoge) }}
