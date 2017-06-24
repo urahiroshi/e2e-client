@@ -74,9 +74,10 @@ class YamlLoader {
   }
 
   toObj() {
-    const usecasesYaml = this.usecaseYamls.join('\n');
-    console.log(usecasesYaml);
-    return yaml.safeLoad(usecasesYaml);
+    if (this.usecaseYamls.length === 1) {
+      return yaml.safeLoad(this.usecaseYamls[0]);
+    }
+    return this.usecaseYamls.map(yaml.safeLoad);
   }
 
   assignParameterFile(path) {
