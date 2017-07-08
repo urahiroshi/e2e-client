@@ -1,0 +1,4 @@
+submitButton:
+  - 'form[action*="/search"] [type=submit]'
+searchInput:
+  - 'form[action*="/search"] [name=p]'

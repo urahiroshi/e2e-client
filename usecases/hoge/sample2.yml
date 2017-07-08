@@ -1,7 +1,0 @@
-url: http://yahoo.com
-actions:
-  - {{> hoge }}
-  {{ fuga }}
-  - selectors:
-    - '.title'
-    type: getText

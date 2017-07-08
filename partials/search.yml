@@ -1,0 +1,6 @@
+- selectors: {{ searchInput }}
+  type: input
+  value: {{ 1 }}
+- selectors: {{ submitButton }}
+  type: click
+{{> getTitle }}

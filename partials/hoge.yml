@@ -1,4 +1,0 @@
-selectors:
-  - 'form[action*="/search"] [name=p]'
-type: input
-value: hoge

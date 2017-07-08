@@ -5,22 +5,25 @@ const YamlLoader = require('./libs/yaml-loader');
 const Config = require('./config');
 const Project = require('./libs/project');
 
-const callProject = function (projectId, bodyObj) {
-  return httpClient.request({
-    uri: `${Config.baseUri}/projects/${projectId}/iterations`,
-    method: 'POST',
-    body: bodyObj
-  })
-  .then(() => {
+async function callProject(projectId, trials) {
+  try {
+    await httpClient.request({
+      uri: `${Config.baseUri}/projects/${projectId}/iterations`,
+      method: 'POST',
+      body: { trials }
+    });
     process.exit(0);
-  });
+  } catch (ex) {
+    console.log(ex);
+    process.exit(1);
+  }
 };
 
-const callTrial = function (bodyObj) {
+const callTrial = function (trial) {
   return httpClient.request({
     uri: `${Config.baseUri}/trials`,
     method: 'POST',
-    body: bodyObj
+    body: trial
   })
   .then(() => {
     process.exit(0);
@@ -34,13 +37,15 @@ const main = function () {
   const partialsRoot = argv.partialsRoot || 'partials';
   const paramsRoot = argv.paramsRoot || 'parameters';
   const yamlLoader = new YamlLoader({
-    usecasesRoot, partialsRoot, parameters, paramsStr
+    usecasesRoot, partialsRoot, paramsRoot, paramsStr
   });
 
   if (usecasesRoot === 'usecases') {
-    return callTrial(yamlLoader.toObj);
+    console.log(`call project: ${Project.projectId}`);
+    return callProject(Project.projectId, yamlLoader.toObj());
   } else {
-    return callProject(Project.projectId, yamlLoader.toObj);
+    console.log('call trial');
+    return callTrial(yamlLoader.toObj());
   }
 };
 

@@ -7,10 +7,10 @@ class YamlLoader {
   constructor({
       usecasesRoot,
       partialsRoot,
-      parametersRoot,
+      paramsRoot,
       paramsStr
     }) {
-    const absUsecasesRoot = path.resolve(usecasesRoot);
+    this._usecasesRoot = path.resolve(usecasesRoot);
     let params = null;
     if (paramsStr && paramsStr.length > 0) {
       params = yaml.safeLoad(paramsStr);
@@ -21,18 +21,18 @@ class YamlLoader {
     this._rawPartials = {};
     this._partials = {};
     this._parameters = {};
-    this.usecaseYamls = [];
-    if (parametersRoot && parametersRoot.length > 0) {
-      const absParametersRoot = path.resolve(parametersRoot);
+    this.trials = [];
+    if (paramsRoot && paramsRoot.length > 0) {
+      const absParametersRoot = path.resolve(paramsRoot);
       this.walk(absParametersRoot, this.assignParameterFile.bind(this));
     }
     if (typeof params === 'object' && !Array.isArray(params)) {
       Object.assign(this._parameters, params);
     }
-    if (fs.statSync(absUsecasesRoot).isDirectory()) {
-      this.walk(absUsecasesRoot, this.pushUsecaseFile.bind(this));
+    if (fs.statSync(this._usecasesRoot).isDirectory()) {
+      this.walk(this._usecasesRoot, this.pushUsecaseFile.bind(this));
     } else {
-      this.pushUsecaseFile(absUsecasesRoot);
+      this.pushUsecaseFile(this._usecasesRoot, { containsPath: false });
     }
   }
 
@@ -74,21 +74,34 @@ class YamlLoader {
   }
 
   toObj() {
-    if (this.usecaseYamls.length === 1) {
-      return yaml.safeLoad(this.usecaseYamls[0]);
+    if (this.trials.length === 1) {
+      return this.trials[0];
     }
-    return this.usecaseYamls.map(yaml.safeLoad);
+    return this.trials;
   }
 
-  assignParameterFile(path) {
-    const paramsYaml = fs.readFileSync(path, { encoding: 'utf-8' });
+  assignParameterFile(paramFilePath) {
+    const paramsYaml = fs.readFileSync(paramFilePath, { encoding: 'utf-8' });
     const params = yaml.safeLoad(paramsYaml);
     YamlLoader.assignParameters(this._parameters, params);
   }
 
-  pushUsecaseFile(path) {
-    const template = this.getTemplate(path);
-    this.usecaseYamls.push(template.render(this._parameters, this._partials));
+  pushUsecaseFile(absPath, options) {
+    const containsPath = options && options.containsPath;
+    const template = this.getTemplate(absPath);
+    const usecaseYaml = template.render(this._parameters, this._partials);
+    const trial = { usecase: yaml.safeLoad(usecaseYaml) };
+    if (containsPath !== false) {
+      const extLen = path.extname(absPath).length;
+      const rootLen = this._usecasesRoot.length;
+      const absPathLen = absPath.length;
+      let usecasePath = absPath.slice(rootLen, absPathLen - extLen);
+      if (usecasePath[0] === '/') {
+        usecasePath = usecasePath.slice(1);
+      }
+      trial.usecasePath = usecasePath;
+    }
+    this.trials.push(trial);
   }
 
   static assignParameters(parentObj, params) {

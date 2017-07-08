@@ -1,6 +1,0 @@
-- selectors:
-  - 'form[action*="/search"] [type=submit]'
-  type: click
-- selectors:
-  - '.title'
-  type: getHtml
