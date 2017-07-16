@@ -1,12 +1,12 @@
 import path from 'path';
 import test from 'ava';
-import YamlLoader from '../libs/yaml-loader';
+import UsecaseLoader from '../libs/usecase-loader';
 
-test('load single usecase by YamlLoader', t => {
-  const yamlLoader = new YamlLoader({
-    usecasesRoot: path.resolve('test/yaml-loader/usecases/hoge/search1.yml'),
-    partialsRoot: path.resolve('test/yaml-loader/partials'),
-    paramsRoot: path.resolve('test/yaml-loader/parameters')
+test('load single usecase by UsecaseLoader', t => {
+  const usecaseLoader = new UsecaseLoader({
+    usecasesRoot: path.resolve('test/usecase-loader/usecases/hoge/search1.yml'),
+    partialsRoot: path.resolve('test/usecase-loader/partials'),
+    paramsRoot: path.resolve('test/usecase-loader/parameters')
   });
   t.deepEqual({
     usecase: {
@@ -28,14 +28,14 @@ test('load single usecase by YamlLoader', t => {
         }
       ]
     }
-  }, yamlLoader.toObj());
+  }, usecaseLoader.toObj());
 });
 
-test('load usecases directory by YamlLoader', t => {
-  const yamlLoader = new YamlLoader({
-    usecasesRoot: path.resolve('test/yaml-loader/usecases'),
-    partialsRoot: path.resolve('test/yaml-loader/partials'),
-    paramsRoot: path.resolve('test/yaml-loader/parameters')
+test('load usecases directory by UsecaseLoader', t => {
+  const usecaseLoader = new UsecaseLoader({
+    usecasesRoot: path.resolve('test/usecase-loader/usecases'),
+    partialsRoot: path.resolve('test/usecase-loader/partials'),
+    paramsRoot: path.resolve('test/usecase-loader/parameters')
   });
   t.deepEqual([
     {
@@ -81,5 +81,5 @@ test('load usecases directory by YamlLoader', t => {
         ]
       }
     }
-  ], yamlLoader.toObj());
+  ], usecaseLoader.toObj());
 });

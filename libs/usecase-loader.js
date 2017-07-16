@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const Template = require('./template');
 
-class YamlLoader {
+class UsecaseLoader {
   constructor({
       usecasesRoot,
       partialsRoot,
@@ -67,7 +67,7 @@ class YamlLoader {
     filePathes.forEach((filePath) => {
       if (fs.statSync(filePath).isDirectory()) {
         this.walk(filePath, onYaml);
-      } else if (YamlLoader.isYaml(filePath)) {
+      } else if (UsecaseLoader.isYaml(filePath)) {
         onYaml(filePath);
       }
     });
@@ -83,7 +83,7 @@ class YamlLoader {
   assignParameterFile(paramFilePath) {
     const paramsYaml = fs.readFileSync(paramFilePath, { encoding: 'utf-8' });
     const params = yaml.safeLoad(paramsYaml);
-    YamlLoader.assignParameters(this._parameters, params);
+    UsecaseLoader.assignParameters(this._parameters, params);
   }
 
   pushUsecaseFile(absPath, options) {
@@ -110,7 +110,7 @@ class YamlLoader {
         parentObj[paramKey] = JSON.stringify(params[paramKey]);
       } else if (typeof params[paramKey] === 'object') {
         parentObj[paramKey] = {};
-        YamlLoader.assignParameters(parentObj[paramKey], params[paramKey]);
+        UsecaseLoader.assignParameters(parentObj[paramKey], params[paramKey]);
       } else {
         parentObj[paramKey] = params[paramKey];
       }
@@ -133,4 +133,4 @@ class YamlLoader {
   }
 }
 
-module.exports = YamlLoader;
+module.exports = UsecaseLoader;

@@ -1,7 +1,7 @@
 const process = require('process');
 const parseArgs = require('minimist');
 const httpClient = new (require('./libs/http-client'))();
-const YamlLoader = require('./libs/yaml-loader');
+const UsecaseLoader = require('./libs/usecase-loader');
 const Config = require('./config');
 const Project = require('./libs/project');
 
@@ -36,16 +36,16 @@ const main = function () {
   const paramsStr = argv.params || '';
   const partialsRoot = argv.partialsRoot || 'partials';
   const paramsRoot = argv.paramsRoot || 'parameters';
-  const yamlLoader = new YamlLoader({
+  const usecaseLoader = new UsecaseLoader({
     usecasesRoot, partialsRoot, paramsRoot, paramsStr
   });
 
   if (usecasesRoot === 'usecases') {
     console.log(`call project: ${Project.projectId}`);
-    return callProject(Project.projectId, yamlLoader.toObj());
+    return callProject(Project.projectId, usecaseLoader.toObj());
   } else {
     console.log('call trial');
-    return callTrial(yamlLoader.toObj());
+    return callTrial(usecaseLoader.toObj());
   }
 };
 
