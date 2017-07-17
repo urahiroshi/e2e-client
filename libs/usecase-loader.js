@@ -5,11 +5,11 @@ const Template = require('./template');
 
 class UsecaseLoader {
   constructor({
-      usecasesRoot,
-      partialsRoot,
-      paramsRoot,
-      paramsStr
-    }) {
+    usecasesRoot,
+    partialsRoot,
+    paramsRoot,
+    paramsStr
+  }) {
     this._usecasesRoot = path.resolve(usecasesRoot);
     let params = null;
     if (paramsStr && paramsStr.length > 0) {
