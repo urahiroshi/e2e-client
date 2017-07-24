@@ -80,6 +80,10 @@ class UsecaseLoader {
     return this.trials;
   }
 
+  toYaml() {
+    return yaml.safeDump(this.toObj());
+  }
+
   assignParameterFile(paramFilePath) {
     const paramsYaml = fs.readFileSync(paramFilePath, { encoding: 'utf-8' });
     const params = yaml.safeLoad(paramsYaml);

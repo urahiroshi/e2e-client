@@ -10,7 +10,7 @@ class Connector {
   }
 
   _retryRequest(options, resolve, reject, retryCount) {
-    const RETRY_MAX = 0;
+    const RETRY_MAX = 10;
     const RETRY_INTERVAL_MS = 3000;
     if (retryCount < RETRY_MAX) {
       setTimeout(
@@ -31,18 +31,14 @@ class Connector {
 
   _request(options, resolve, reject, _retryCount) {
     _retryCount = _retryCount || 0;
-    this._log('request: ', JSON.stringify(options));
     request(options, (error, response, body) => {
       try {
-        const RETRY_MAX = 2;
-        const RETRY_INTERVAL_MS = 3000;
         if (error) {
           this._log('error: ', error);
           this._retryRequest(options, resolve, reject, _retryCount);
           return;
         }
         const statusCode = response.statusCode;
-        this._log('response: ', JSON.stringify(response));
         if (statusCode >= 200 && statusCode < 300) {
           if (
             response.headers['content-type'] &&
