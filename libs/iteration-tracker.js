@@ -26,10 +26,10 @@ class IterationTracker {
         const updatedResults = Trial.updatedResults(
           this._trialsMap[trial.id].results, results
         );
-        this._showUpdatedResults(this._trialsMap[trial.id], updatedResults);
+        Trial.showUpdatedResults(this._trialsMap[trial.id], updatedResults);
         if (trial.state === 'completed' || trial.state === 'failed') {
           this._finishedTrialIds.push(trial.id);
-          this._showFinishedTrial(trial);
+          Trial.showFinishedTrial(trial);
         }
       }
     }
@@ -38,24 +38,6 @@ class IterationTracker {
 
   _waitInterval() {
     return new Promise(resolve => setTimeout(resolve, Config.trackInterval));
-  }
-
-  _showUpdatedResults(trial, results) {
-    if (results.length === 0) { return; }
-    results.forEach(result => {
-      const header = `${result.createdAt} [${trial.id}:${result.index}]`;
-      const action = trial.usecase.actions[result.index];
-      const actionParams = [action.type];
-      if (action.selectors) { actionParams.push(JSON.stringify(action.selectors)); }
-      if (action.value) { actionParams.push(action.value); }
-      let actionResult = (result.text || result.html || result.uri);
-      actionResult = actionResult ? `\n=> ${actionResult}` : '';
-      console.log(`${header} ${actionParams.join(' ')}${actionResult}`);
-    });
-  }
-
-  _showFinishedTrial(trial) {
-    console.log(`${trial.updatedAt} [${trial.id}] ${trial.state}`);
   }
 
   get _iterationLabel() {

@@ -5,6 +5,7 @@ const UsecaseLoader = require('./libs/usecase-loader');
 const Config = require('./config');
 const Project = require('./libs/project');
 const IterationTracker = require('./libs/iteration-tracker');
+const Trial = require('./libs/trial');
 
 async function callProject(projectId, trials) {
   try {
@@ -14,7 +15,7 @@ async function callProject(projectId, trials) {
       body: { trials }
     });
     console.log(
-      `/projects/${projectId}/iterations/${iteration.iterationNumber} created.`
+      `/projects/${projectId}/iterations/${iteration.iterationNumber} Created.`
     );
     const iterationTrials = iteration.trials;
     const iterationTracker = new IterationTracker(
@@ -28,15 +29,21 @@ async function callProject(projectId, trials) {
   }
 };
 
-const callTrial = function (trial) {
-  return httpClient.request({
-    uri: `${Config.baseUri}/trials`,
-    method: 'POST',
-    body: trial
-  })
-  .then(() => {
+async function callTrial(trial) {
+  try {
+    const res = await httpClient.request({
+      uri: `${Config.baseUri}/trials`,
+      method: 'POST',
+      body: trial
+    });
+    const trialId = res.id;
+    console.log(`/trials/${trialId} Created.`);
+    await Trial.trackUntilEnd(trialId);
     process.exit(0);
-  });
+  } catch (ex) {
+    console.log(ex);
+    process.exit(1);
+  }
 };
 
 const main = function () {
