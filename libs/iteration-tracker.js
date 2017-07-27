@@ -27,6 +27,7 @@ class IterationTracker {
           this._trialsMap[trial.id].results, results
         );
         Trial.showUpdatedResults(this._trialsMap[trial.id], updatedResults);
+        this._trialsMap[trial.id].results = results;
         if (trial.state === 'completed' || trial.state === 'failed') {
           this._finishedTrialIds.push(trial.id);
           Trial.showFinishedTrial(trial);

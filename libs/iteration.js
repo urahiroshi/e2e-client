@@ -25,7 +25,8 @@ class Iteration {
     const updatedTrials = iteration.trials.reduce((previous, trial) => {
       if (
         this.trials[trial.id] == undefined ||
-        this.trials[trial.id].updatedAt !== trial.updatedAt
+        this.trials[trial.id].updatedAt !== trial.updatedAt ||
+        this.trials[trial.id].state !== trial.state
       ) {
         this.trials[trial.id] = trial;
         return previous.concat(trial);
