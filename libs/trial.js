@@ -14,6 +14,7 @@ class Trial {
       let results = await Trial.fetchResults(trialId);
       let updatedResults = Trial.updatedResults(currentResults, results);
       Trial.showUpdatedResults(trial, updatedResults);
+      currentResults = results;
       if (trial.state === 'completed' || trial.state === 'failed') {
         Trial.showFinishedTrial(trial);
         break;
