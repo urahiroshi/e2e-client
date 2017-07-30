@@ -55,11 +55,11 @@ const main = function () {
   const usecaseLoader = new UsecaseLoader({
     usecasesRoot, partialsRoot, paramsRoot, paramsStr
   });
-
+  const projectId = Project.get().id;
   if (usecasesRoot === 'usecases') {
-    console.log(`call project: ${Project.projectId}`);
+    console.log(`call project: ${projectId}`);
     console.log(usecaseLoader.toYaml());
-    return callProject(Project.projectId, usecaseLoader.toObj());
+    return callProject(projectId, usecaseLoader.toObj());
   } else {
     console.log('call trial');
     console.log(usecaseLoader.toYaml());
