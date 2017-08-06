@@ -4,7 +4,7 @@ const path = require('path');
 const httpClient = new (require('./http-client'))();
 const Config = require('../config');
 
-const projectConfig = path.join(__dirname, '../project.yaml');
+const projectConfig = path.join(__dirname, '../project.yml');
 
 class Project {
   static get() {
